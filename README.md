@@ -41,6 +41,11 @@ defaultOpts = {
 	-- Filetypes to ignore.
 	ignoredFiletypes = {},
 
+	-- If set, only buffers with these filetypes are eligible for auto-closing.
+	-- nil (default) means all filetypes are processed. Lower priority than
+	-- `ignoredFiletypes`: a filetype listed in both is still ignored.
+	onlyFiletypes = nil,
+
 	-- Ignore files matching this lua pattern; empty string disables this setting.
 	ignoreFilenamePattern = "",
 

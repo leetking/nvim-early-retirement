@@ -71,6 +71,8 @@ local function checkOutdatedBuffer(c)
 
 		local bufFt = bufOpt(buf.bufnr, "filetype")
 		local isIgnoredFt = vim.tbl_contains(c.ignoredFiletypes, bufFt)
+		local isNotInOnlyFt = c.onlyFiletypes ~= nil
+			and not vim.tbl_contains(c.onlyFiletypes, bufFt)
 
 		local isModified = bufOpt(buf.bufnr, "modified")
 		local isIgnoredUnsavedBuf = isModified and c.ignoreUnsavedChangesBufs
@@ -95,6 +97,7 @@ local function checkOutdatedBuffer(c)
 			recentlyUsed
 			or isQuickFixBuffer
 			or isIgnoredFt
+			or isNotInOnlyFt
 			or isIgnoredSpecialBuffer
 			or isIgnoredAltFile
 			or isIgnoredUnsavedBuf
@@ -130,6 +133,7 @@ end
 ---@class opts
 ---@field retirementAgeMins number minutes after which an inactive buffer is closed
 ---@field ignoredFiletypes string[] list of filetypes to never close
+---@field onlyFiletypes? string[] if set, only buffers with these filetypes are eligible to close (lower priority than ignoredFiletypes); nil means all filetypes are processed
 ---@field notificationOnAutoClose boolean list of filetypes to never close
 ---@field ignoreAltFile boolean whether the alternate file is also going to be ignored
 ---@field ignoreUnsavedChangesBufs boolean when false, will automatically write and then close buffers with unsaved changes
